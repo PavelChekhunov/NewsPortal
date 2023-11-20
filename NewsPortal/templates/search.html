@@ -1,0 +1,81 @@
+{% extends 'default.html' %}
+
+{% load custom_tags %}
+
+{% block title %}
+Search news
+{% endblock title %}
+
+{% block content %}
+    <h1>Новости</h1>
+    <hr>
+
+    <form action="" method="get">
+        <table border="0" style="width:100%;">
+            <tr>
+                <th style="padding: 18px;text-align:right;">{{ filterset.form.title.label_tag }}</th>
+                <td style="text-align:left;width:200px;">
+                {{ filterset.form.title.errors }}
+                {{ filterset.form.title }}
+                </td>
+                <th style="padding: 18px;width:160px;text-align:right;">{{ filterset.form.category.label_tag }}</th>
+                <td rowspan="2" style="text-align:left;vertical-align:top;padding-top:15px;">
+                {{ filterset.form.category.errors }}
+                {{ filterset.form.category }}
+                </td>
+            </tr>
+            <tr>
+                <th style="padding: 18px;text-align:right;">{{ filterset.form.datetime_created.label_tag }}</th>
+                <td style="text-align:left;">
+                {{ filterset.form.datetime_created.errors }}
+                {{ filterset.form.datetime_created }}
+                </td>
+            </tr>
+        </table>
+        <input type="submit" value="Найти" />
+    </form>
+
+    <hr>
+    {% if posts %}
+        <table style="width:100%;margin-bottom:50px;">
+            <tr><th style="border-width:1px;width:300px;">Заголовок</th>
+                <th style="border-width:1px;padding:0px 5px 0px 5px;width:155px;">Дата публикации</th>
+                <th style="border-width:1px;">Текст</th>
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td style="text-align:left;">
+                    {% if post.pk in postimg %}
+                    <a href="../{{post.pk}}-img">{{ post.title }}</a>
+                    {% else %}
+                    <a href="../{{post.pk}}">{{ post.title }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ post.datetime_created|date:'d.m.Y' }}</td>
+                <td style="padding-left:9px;text-align:left;">{{ post.text|truncatechars:100 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Новостей нет!</h2>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+           ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}

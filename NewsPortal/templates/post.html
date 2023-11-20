@@ -1,0 +1,32 @@
+{% extends 'default.html' %}
+
+{% load censor_filter %}
+
+{% block title %}
+Post (new or article)
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ post.title|censor }}</h1>
+    <table style="width:100%; font-size:16pt"><tr>
+        <th style="width:25%">Автор: {{post.author.user.username}}</th>
+        <th style="width:40%">Дата создания: {{post.datetime_created|date:'d.m.Y'}}</th>
+        <th style="width:35%">Категория: {{fcat}}</th>
+    </tr></table>
+    <hr>
+    <div style="text-align:left;">{% filter linebreaks|censor %}{{ post.text }}{% endfilter %}</div>
+
+    {% if page_vid %}
+    <div style="margin:40 0 20 0;width:800px;height:450px;">
+    <iframe width="100%" height="100%" src='{{page_vid}}'>
+    </iframe>
+    </div>
+    {% endif %}
+{% endblock content %}
+
+{% block cmenu %}
+    {% if is_current_author %}
+    <li class="nav-item"><a class="nav-link" href="./{{post.pk}}/edit/">Редактирование поста</a></li>
+    <li class="nav-item"><a class="nav-link" href="./{{post.pk}}/delete/">Удаление поста</a></li>
+    {% endif %}
+{% endblock cmenu %}

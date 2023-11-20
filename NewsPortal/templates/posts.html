@@ -1,0 +1,66 @@
+{% extends 'default.html' %}
+
+{% load custom_tags %}
+
+{% block title %}
+News
+{% endblock title %}
+
+{% block content %}
+    <h1>Все новости</h1>
+    <hr>
+    {% if posts %}
+        <table style="width:100%;margin-top:25px;">
+            <tr><th style="border-width:1px;width:300px;">Заголовок</th>
+                <th style="border-width:1px;padding:0px 5px 0px 5px;width:155px;">Дата публикации</th>
+                <th style="border-width:1px;">Текст</th>
+            </tr>
+            {% for post in posts %}
+            <tr>
+                <td style="text-align:left;">
+                    {% if post.pk in postimg %}
+                    <a href="./{{post.pk}}-img">{{ post.title }}</a>
+                    {% else %}
+                    <a href="./{{post.pk}}">{{ post.title }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ post.datetime_created|date:'d.m.Y' }}</td>
+                <td style="text-align:left;padding-left:9px;">{{ post.text|truncatechars:100 }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <h2>Новостей нет!</h2>
+    {% endif %}
+
+    {% if page_obj.has_previous %}
+        <a href="?{% url_replace page=1 %}">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+           ...
+            <a href="?{% url_replace page=page_obj.previous_page_number %}">{{ page_obj.previous_page_number }}</a>
+        {% endif %}
+    {% endif %}
+
+    {{ page_obj.number }}
+
+    {% if page_obj.has_next %}
+        <a href="?{% url_replace page=page_obj.next_page_number %}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+            <a href="?{% url_replace page=page_obj.paginator.num_pages %}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock content %}
+
+{% block cmenu %}
+    <li class="nav-item"><a class="nav-link" href="/posts/createnew/">Создание новости</a></li>
+    <li class="nav-item"><a class="nav-link" href="/posts/createarticle/">Создание статьи</a></li>
+{% endblock cmenu %}
+
+{% block caudio %}
+    <div style="padding-right:25px;">
+        <audio controls controlsList="nodownload noplaybackrate"
+               src="/static/Madonna_Abba_Hung_Up_Gimme!_Gimme.mp3" style="width:240px;height:35px;"></audio>
+    </div>
+{% endblock caudio%}
