@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+
+{% load censor_filter %}
+{% load static %}
+
+{% block title %}
+Post (new or article)
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ post.title|censor }}</h1>
+    <table style="width:100%; font-size:16pt"><tr>
+        <th style="width:25%">Автор: {{post.author.user.username}}</th>
+        <th style="width:40%">Дата создания: {{post.datetime_created|date:'d.m.Y'}}</th>
+        <th style="width:35%">Категория: {{fcat}}</th>
+    </tr></table>
+    <hr>
+    <div style="text-align:left;">{% filter linebreaks|censor %}{{ post.text }}{% endfilter %}</div>
+<div style="padding-top:20px">
+    <img src="{% static img_src %}" alt="" width="60%" height="60%">
+</div>
+{% endblock content %}

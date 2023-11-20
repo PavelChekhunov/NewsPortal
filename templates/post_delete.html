@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+
+{% block title %}
+Delete post
+{% endblock title %}
+
+{% block content %}
+    <h1>Удаление новости</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    {% if is_current_author %}
+    <p>Удаляем "{{ object.title }}"?</p>
+    <input type="submit" value="Delete" />
+    {% else %}
+    <h3>Вы не можете удалить этот пост, так как не являетесь его создателем!</h3>
+    {% endif %}
+</form>
+{% endblock content %}

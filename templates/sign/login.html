@@ -1,0 +1,35 @@
+{% extends "default.html" %}
+
+{% block title %}
+Вход / регистрация
+{% endblock title %}
+
+{% block content %}
+<div style="margin: auto; width:50%; border:1px solid #aaaaff;padding:20px;background-color:#eeeef0;">
+<h3 style="margin:10px 0px 40px 0px;"> Войти в портал</h3>
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table style="width:100%;">
+    <tr>
+        <th style="text-align:right;padding:9px;width:40%;">{{ form.username.label_tag }}</th>
+        <td style="text-align:left;padding:9px;width:60%;">{{ form.username }}</td>
+    </tr>
+    <tr>
+        <th style="text-align:right;padding:9px;">{{ form.password.label_tag }}</th>
+        <td style="text-align:left;padding:9px;">{{ form.password }}</td>
+    </tr>
+    <tr>
+        <th colspan="2" style="padding-top:30px;text-align:center;">
+            <input type="submit" value="Войти" style="font-weight: bold;width:125px;">
+        </th>
+    </tr>
+    <tr>
+        <td colspan="2" style="padding-top:30px;">
+            <a href="/sign/signup" style="font-weight: bold;width:125px;">Регистрация</a>
+        </td>
+    </tr>
+    </table>
+</form>
+</div>
+{% endblock %}
